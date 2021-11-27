@@ -69,8 +69,65 @@
       </div>
   
    <script src="./script.js"></script>
-    <scripc> 
-     Alert("Hola");
-     </script>
+     <script>
+ 
+const setNotificationMessage = (token, title, body, data) =>{
+  const message = {
+    to: token,
+    sound: "default",
+    title: title,
+    body: body,
+    data: data,
+  }
+  return message
+}
+
+const messageNotification = setNotificationMessage(
+      "ExponentPushToken[VfwtmrDNE-KeGr6X61SWc1]",
+      "Titulo Prueba",
+      "Mensaje de prueba",
+      { data: "data de prueba" }
+    );
+   // console.log("Funciona :')",messageNotification);
+
+const sendPushNotification = async (message)=>{
+  const result = { response: true, error: null};
+  try {
+  await fetch("https://exp.host/--/api/v2/push/send",{
+    method:"POST",
+    headers: {
+      Accept:"application/json",
+      "Accept-encoding": "gzip, deflate",
+      "Content-Type": "application/json",
+  },
+  body: JSON.stringify(message),
+  }).then(
+    ()=>result.response = true)
+  } catch (error) {
+    result.response = false;
+    result.error = error
+  }
+  return result
+}
+
+
+const enviarahora = async ()=>{
+
+  const response = await sendPushNotification(messageNotification);
+  
+  if (response.response) {
+     //Alert.alert("Se ha enviado el mensaje")
+     console.log("Se ha enviado el mensaje");
+     console.log("Sin errores")
+   } else {
+     //Alert.alert("Ocurrio un problema al enviar el mensaje")
+     console.log("Ocurrio un problema al enviar el mensaje"+response.error);
+   }
+
+}
+
+enviarahora()
+
+   </script>
 </body>
 </html>
